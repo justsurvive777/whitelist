@@ -39,7 +39,7 @@ keyFrameStroke.Parent = keyFrame
 -- Whitelist Check Function
 local function checkWhitelist()
     local success, whitelistData = pcall(function()
-        return game:HttpGet("https://raw.githubusercontent.com/justsurvive777/ID-s/refs/heads/main/ID's")
+        return game:HttpGet("https://pastefy.app/IskX54d8/raw")
     end)
     
     if not success then

@@ -1,0 +1,73 @@
+-- Services
+local CoreGui = game:GetService("CoreGui")
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+-- Create Whitelist GUI
+local whitelistGui = Instance.new("ScreenGui")
+whitelistGui.Name = "THubWhitelistSystem"
+whitelistGui.Parent = CoreGui
+whitelistGui.ResetOnSpawn = false
+
+local keyFrame = Instance.new("Frame")
+keyFrame.Name = "KeyFrame"
+keyFrame.Parent = whitelistGui
+keyFrame.BackgroundColor3 = Color3.fromRGB(10, 10, 15)
+keyFrame.Position = UDim2.new(0.5, -140, 0.5, -50)
+keyFrame.Size = UDim2.new(0, 280, 0, 100)
+keyFrame.Visible = false
+
+local keyFrameCorner = Instance.new("UICorner")
+keyFrameCorner.CornerRadius = UDim.new(0, 12)
+keyFrameCorner.Parent = keyFrame
+
+local keyFrameLabel = Instance.new("TextLabel")
+keyFrameLabel.Parent = keyFrame
+keyFrameLabel.BackgroundTransparency = 1
+keyFrameLabel.Size = UDim2.new(1, 0, 1, 0)
+keyFrameLabel.Font = Enum.Font.GothamBold
+keyFrameLabel.Text = "ACCESS DENIED\nNOT WHITELISTED"
+keyFrameLabel.TextColor3 = Color3.fromRGB(255, 50, 50)
+keyFrameLabel.TextSize = 16
+keyFrameLabel.TextWrapped = true
+
+local keyFrameStroke = Instance.new("UIStroke")
+keyFrameStroke.Thickness = 2
+keyFrameStroke.Color = Color3.fromRGB(255, 0, 0)
+keyFrameStroke.Parent = keyFrame
+
+-- Whitelist Check Function
+local function checkWhitelist()
+    local success, whitelistData = pcall(function()
+        return game:HttpGet("https://raw.githubusercontent.com/justsurvive777/ID-s/refs/heads/main/ID's")
+    end)
+    
+    if not success then
+        keyFrameLabel.Text = "ERROR\nFAILED TO CONNECT"
+        keyFrame.Visible = true
+        wait(3)
+        LocalPlayer:Kick("Failed to connect to whitelist server.")
+        return false
+    end
+    
+    -- Check if user ID is in whitelist
+    local userId = tostring(LocalPlayer.UserId)
+    if whitelistData:find(userId) then
+        -- User is whitelisted
+        return true
+    else
+        -- User is not whitelisted
+        keyFrame.Visible = true
+        wait(3)
+        LocalPlayer:Kick("You are not whitelisted. User ID: " .. userId)
+        return false
+    end
+end
+
+-- Perform whitelist check
+if not checkWhitelist() then
+    return
+end
+
+-- If whitelisted, continue with main script
+print("Whitelist check passed for User ID: " .. LocalPlayer.UserId)

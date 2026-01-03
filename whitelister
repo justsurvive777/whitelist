@@ -37,7 +37,7 @@ keyFrameStroke.Color = Color3.fromRGB(255, 0, 0)
 keyFrameStroke.Parent = keyFrame
 
 -- Whitelist Check Function
-local function checkWhitelist()
+local function checkWhitelist(https://pastefy.app/ku0YhkDJ/raw)
     local success, whitelistData = pcall(function()
         return game:HttpGet("https://pastefy.app/IskX54d8/raw")
     end)
